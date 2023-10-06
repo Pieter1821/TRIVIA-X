@@ -1,0 +1,13 @@
+import React from 'react';
+
+function Score({ score, totalQuestionsAnswered }) {
+  return (
+    <div className="text-center bg-gray-200 p-4 rounded-lg mt-4">
+      <p className="text-xl font-semibold text-blue-600">
+        Score: {score} out of {totalQuestionsAnswered}
+      </p>
+    </div>
+  );
+}
+
+export default Score;

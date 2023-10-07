@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './components/Header';
 import Question from './components/Question';
 import Timer from './components/Timer';
@@ -73,7 +73,7 @@ function App() {
   };
 
   return (
-    <div className="bg-gray-100 ">
+    <div className="bg-gray-100 min-h-screen">
       <Header onSelectGenre={setSelectedGenre} selectedGenre={selectedGenre} />
       <main className="container mx-auto p-4">
         {!gameStarted ? (
@@ -104,15 +104,15 @@ function App() {
                   userAnswer={userAnswer}
                 />
               </div>
-              <div className="mt-4 flex justify-center gap-10 ">
+              <div className="mt-4 flex flex-col sm:flex-row justify-center gap-2 sm:gap-10">
                 <button
-                  className="bg-blue-500 text-white px-4 py-2 rounded  hover:bg-blue-700 mb-2 w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-blue-500"
                   onClick={moveToNextQuestion}
                 >
                   Next Question
                 </button>
                 <button
-                  className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-red-500"
+                  className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 w-full sm:w-auto mt-2 sm:mt-0 focus:outline-none focus:ring-2 focus:ring-red-500"
                   onClick={resetGame}
                 >
                   Reset Game

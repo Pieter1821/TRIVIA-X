@@ -3,3 +3,8 @@
 @import 'tailwindcss/utilities';
 
 
+* {
+    box-sizing: border-box;
+    padding: 40px , auto;
+    margin: 0;
+}

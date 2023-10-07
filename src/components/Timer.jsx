@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-function Timer({ timeLeft }) {
+function Timer({ timeLeft, onTimeExpired }) {
   const [remainingTime, setRemainingTime] = useState(timeLeft);
 
   useEffect(() => {
@@ -10,21 +10,28 @@ function Timer({ timeLeft }) {
 
     if (remainingTime <= 0) {
       clearInterval(timer);
+      // Trigger the callback when the timer reaches zero
+      if (onTimeExpired) {
+        onTimeExpired();
+      }
     }
 
     return () => clearInterval(timer);
-  }, [remainingTime]);
+  }, [remainingTime, onTimeExpired]);
 
-  // Convert remaining time to minutes and seconds
   const minutes = Math.floor(remainingTime / 60);
   const seconds = remainingTime % 60;
 
   return (
-    <div>
+    <div className="flex flex-col items-center justify-center">
       <h3 className="text-xl font-semibold">Time Left</h3>
-      <p className="text-2xl">
-        {minutes}:{seconds < 10 ? `0${seconds}` : seconds} minutes
-      </p>
+      {remainingTime <= 0 ? (
+        <p className="text-2xl text-red-600">Time's up!</p>
+      ) : (
+        <p className="text-2xl">
+          {minutes}:{seconds < 10 ? `0${seconds}` : seconds} minutes
+        </p>
+      )}
     </div>
   );
 }

@@ -4,7 +4,7 @@ function Question({ question, options, onAnswerSelect, userAnswer }) {
   if (!options || !Array.isArray(options)) {
     return (
       <div className="bg-gray-800 text-white p-4 rounded">
-        <p>Loading...</p>
+        <p className='flex justify-center'>Loading...</p>
       </div>
     );
   }

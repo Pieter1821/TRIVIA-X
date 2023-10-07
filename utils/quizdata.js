@@ -5,7 +5,10 @@ const QuizData = async (genre) => {
     const response = await axios.get(
       `https://opentdb.com/api.php?amount=10&category=${genre}`
     );
-    return response.data.results.map((questionData) => {
+    
+    console.log('API Response:', response.data);
+
+    const questions = response.data.results.map((questionData) => {
       return {
         question: questionData.question,
         options: [
@@ -15,6 +18,10 @@ const QuizData = async (genre) => {
         correctAnswer: questionData.correct_answer,
       };
     });
+
+    console.log('Transformed Questions:', questions);
+
+    return questions;
   } catch (error) {
     console.error('Error fetching quiz questions:', error);
     return [];

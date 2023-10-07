@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 function Header({ onSelectGenre, selectedGenre, isLoading }) {
   // Define an array of genre options with their labels and values
@@ -9,7 +9,7 @@ function Header({ onSelectGenre, selectedGenre, isLoading }) {
     { label: 'Science & Nature', value: '17' },
     { label: 'Computers', value: '18' },
     { label: 'Books', value: '10' },
-    // Add more genre options here
+   
   ];
 
   return (

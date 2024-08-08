@@ -1,7 +1,5 @@
 # Trivia-X
 
-A simple React-based trivia game that fetches quiz questions from the Open Trivia Database API.
-
 ## Features
 
 - Multiple-choice trivia questions with timers.

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 function StartButton({ onStartGame }) {
   const [userName, setUserName] = useState('');
@@ -14,7 +14,7 @@ function StartButton({ onStartGame }) {
   };
 
   return (
-    <div className="mt-4 md:mt-40 ">
+    <div className="mt-4 md:mt-40">
       <input
         type="text"
         placeholder="Enter your name"

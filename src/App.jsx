@@ -1,51 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import Header from './components/Header';
-import Question from './components/Question';
-import Timer from './components/Timer';
-import Score from './components/Score';
+import  { useState, useEffect } from 'react';
 import QuizData from '../utils/quizdata';
+import Question from './components/Question';
+import Score from './components/Score';
 import GameOverModal from './components/GameOverModal';
-import StartButton from './components/StartButton';
+
 
 function App() {
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(10);
   const [score, setScore] = useState(0);
-  const [userAnswer, setUserAnswer] = useState(null);
-  const [answerAlert, setAnswerAlert] = useState(null);
-  const [selectedGenre, setSelectedGenre] = useState('10');
-  const [gameStarted, setGameStarted] = useState(false);
   const [totalQuestionsAnswered, setTotalQuestionsAnswered] = useState(0);
   const [showGameOverModal, setShowGameOverModal] = useState(false);
-  const [userName, setUserName] = useState('');
+  const [selectedDifficulty,setSelectedDifficulty] = useState('');
+  const [userName] = useState('Pieter Deane');
 
   useEffect(() => {
-    if (gameStarted) {
-      QuizData(selectedGenre)
-        .then((data) => setQuestions(data))
-        .catch((error) => console.error('Error fetching quiz questions:', error));
+    async function fetchData() {
+      const data = await QuizData('9');
+      setQuestions(data.slice(0, 20)); 
     }
-  }, [gameStarted, selectedGenre]);
+    fetchData();
+  }, [selectedDifficulty]);
 
-  const resetGame = () => {
-    setGameStarted(false);
-    setQuestions([]);
-    setCurrentQuestionIndex(0);
-    setScore(0);
-    setUserAnswer(null);
-    setAnswerAlert(null);
-    setTotalQuestionsAnswered(0);
-    setTimeLeft(2);
-    setUserName('');
-  };
-
-  const moveToNextQuestion = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setUserAnswer(null);
-      setAnswerAlert(null);
-      setTimeLeft(2);
+  const handleAnswer = (isCorrect) => {
+    if (isCorrect) {
+      setScore(prevScore => prevScore + 1);
+    }
+    setTotalQuestionsAnswered(prevTotal => prevTotal + 1);
+    if (currentQuestionIndex < 19) {
+      setCurrentQuestionIndex(prevIndex => prevIndex + 1);
     } else {
       setShowGameOverModal(true);
     }
@@ -53,75 +36,26 @@ function App() {
 
   const handleCloseGameOverModal = () => {
     setShowGameOverModal(false);
-    resetGame();
-  };
-
-  const handleAnswerSelect = (selectedAnswer) => {
-    const isCorrect = selectedAnswer === questions[currentQuestionIndex].correctAnswer;
-
-    setUserAnswer(selectedAnswer);
-    setScore(isCorrect ? score + 1 : score);
-    setAnswerAlert(isCorrect ? 'Correct!' : 'Wrong!');
-    setTotalQuestionsAnswered(totalQuestionsAnswered + 1);
-
-    setTimeout(moveToNextQuestion, 1000);
-  };
-
-  const startGame = (userName) => {
-    setGameStarted(true);
-    setUserName(userName);
+    setCurrentQuestionIndex(0);
+    setScore(0);
+    setTotalQuestionsAnswered(0);
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen">
-      <Header onSelectGenre={setSelectedGenre} selectedGenre={selectedGenre} />
-      <main className="container mx-auto p-4">
-        {!gameStarted ? (
-          <div className="flex items-center justify-center mt-10">
-            <StartButton onStartGame={startGame} />
-          </div>
-        ) : (
+    <div className="App">
+      <header className="App-header">
+        <h1>Trivia Game</h1>
+      </header>
+      <main>
+        {questions.length > 0 && currentQuestionIndex < 20 && (
           <>
-            <div className="mt-4">
-              <Timer timeLeft={timeLeft * 60} onTimeExpired={moveToNextQuestion} />
-              <Score score={score} totalQuestionsAnswered={totalQuestionsAnswered} />
-            </div>
-            <div className="py-4 sm:py-8">
-              <div className="flex flex-col items-center justify-center">
-                {answerAlert && (
-                  <div
-                    className={`mt-4 text-center text-lg ${
-                      userAnswer === questions[currentQuestionIndex]?.correctAnswer ? 'text-green-600' : 'text-red-600'
-                    }`}
-                  >
-                    {answerAlert}
-                  </div>
-                )}
-                <Question
-                  question={questions[currentQuestionIndex]?.question}
-                  options={questions[currentQuestionIndex]?.options}
-                  onAnswerSelect={handleAnswerSelect}
-                  userAnswer={userAnswer}
-                />
-              </div>
-              <div className="mt-4 flex flex-col sm:flex-row justify-center gap-2 sm:gap-10">
-                <button
-                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  onClick={moveToNextQuestion}
-                >
-                  Next Question
-                </button>
-                <button
-                  className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 w-full sm:w-auto mt-2 sm:mt-0 focus:outline-none focus:ring-2 focus:ring-red-500"
-                  onClick={resetGame}
-                >
-                  Reset Game
-                </button>
-              </div>
-            </div>
+            <Question
+              question={questions[currentQuestionIndex]}
+              onAnswer={handleAnswer}
+            />
+            <Score score={score} totalQuestionsAnswered={totalQuestionsAnswered} />
           </>
         )}
-
         {showGameOverModal && (
           <GameOverModal
             userName={userName}

@@ -8,18 +8,12 @@ import GameOverModal from './components/GameOverModal';
 import StartButton from './components/StartButton';
 
 function App() {
-  interface QuestionType {
-    question: string;
-    options: string[];
-    correctAnswer: string;
-  }
-
-  const [questions, setQuestions] = useState<QuestionType[]>([]);
+  const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(10);
   const [score, setScore] = useState(0);
   const [userAnswer, setUserAnswer] = useState(null);
-  const [answerAlert, setAnswerAlert] = useState<string | null>(null);
+  const [answerAlert, setAnswerAlert] = useState(null);
   const [selectedGenre, setSelectedGenre] = useState('10');
   const [gameStarted, setGameStarted] = useState(false);
   const [totalQuestionsAnswered, setTotalQuestionsAnswered] = useState(0);
@@ -80,7 +74,7 @@ function App() {
 
   return (
     <div className="bg-gray-100 min-h-screen">
-      <Header onSelectGenre={setSelectedGenre} selectedGenre={selectedGenre} isLoading={undefined} />
+      <Header onSelectGenre={setSelectedGenre} selectedGenre={selectedGenre} />
       <main className="container mx-auto p-4">
         {!gameStarted ? (
           <div className="flex items-center justify-center mt-10">
@@ -136,7 +130,6 @@ function App() {
             onClose={handleCloseGameOverModal}
           />
         )}
-         
       </main>
     </div>
   );

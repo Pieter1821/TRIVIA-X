@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const QuizData = async (genre) => {
+const QuizData = async (genre, difficulty) => {
   try {
     const response = await axios.get(
-      `https://opentdb.com/api.php?amount=10&category=${genre}`
+      `https://opentdb.com/api.php?amount=20&category=${genre}&difficulty=${difficulty}`
     );
     
     console.log('API Response:', response.data);

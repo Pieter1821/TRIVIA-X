@@ -1,6 +1,13 @@
 import React from 'react';
 
-function GameOverModal({ userName, score, totalQuestionsAnswered, onClose }) {
+type GameOverModalProps = {
+  userName: string;
+  score: number;
+  totalQuestionsAnswered: number;
+  onClose: () => void;
+};
+
+const GameOverModal: React.FC<GameOverModalProps> = ({ userName, score, totalQuestionsAnswered, onClose }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50 backdrop-blur-lg">
       <div className="bg-gradient-to-b from-purple-500 to-blue-500 w-96 p-6 rounded-lg shadow-lg text-white">
@@ -36,4 +43,3 @@ function GameOverModal({ userName, score, totalQuestionsAnswered, onClose }) {
 }
 
 export default GameOverModal;
-
